@@ -1,0 +1,19 @@
+{
+  "name": "bot-al-a3lam",
+  "version": "1.0.0",
+  "description": "بوت فعالية تخمين الأعلام - Baileys",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.18",
+    "@hapi/boom": "^10.0.1",
+    "pino": "^9.0.0"
+  },
+  "overrides": {
+    "@whiskeysockets/baileys": {
+      "libsignal": "npm:@whiskeysockets/libsignal-node@^2.0.1"
+    }
+  }
+}
