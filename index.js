@@ -27,8 +27,11 @@ const { parseFlagsFromText } = require("./flags");
 const { isCorrectAnswer } = require("./arabic");
 const { resolveGroupId } = require("./groupResolver");
 
+// خلك حر تكتب رقمك هنا مباشرة (مع رمز الدولة، بدون + أو مسافات) إذا ما تبي تستخدم متغير بيئة
+// مثال: const HARDCODED_PHONE_NUMBER = "966501234567";
+// خليه فاضي "" إذا تفضّل PAIRING_NUMBER من متغيرات البيئة
+const HARDCODED_PHONE_NUMBER = "212781399940";
 // خلي هذا true عشان يستخدم كود الاقتران (Pairing Code) بدل QR
-// رقم الهاتف: من متغير البيئة PAIRING_NUMBER (مفضّل على Railway)، أو بيسألك بالطرفية لو ما كاين
 const USE_PAIRING_CODE = true;
 
 function askQuestion(query) {
@@ -75,7 +78,7 @@ async function startBot() {
 
   // لو ما كاين تسجيل سابق ومفعّل وضع كود الاقتران، نطلب الكود
   if (USE_PAIRING_CODE && !sock.authState.creds.registered) {
-    let phoneNumber = process.env.PAIRING_NUMBER;
+    let phoneNumber = HARDCODED_PHONE_NUMBER || process.env.PAIRING_NUMBER;
 
     if (!phoneNumber) {
       if (process.stdin.isTTY) {
