@@ -8,6 +8,17 @@ const {
 const qrcode = require("qrcode-terminal");
 const pino = require("pino");
 const readline = require("readline");
+const http = require("http");
+
+// سيرفر بسيط بس عشان Railway يعتبر التطبيق "شغال وصحي" وما يوقفه
+// (Railway بمشاريع الويب يحتاج التطبيق يرد على منفذ، حتى لو البوت نفسه ما يحتاج سيرفر)
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
+  res.end("البوت شغال ✅");
+}).listen(PORT, () => {
+  console.log(`🌐 سيرفر الحماية شغال على المنفذ ${PORT}`);
+});
 
 const config = require("./config");
 const alam = require("./alam");
@@ -67,9 +78,15 @@ async function startBot() {
     let phoneNumber = process.env.PAIRING_NUMBER;
 
     if (!phoneNumber) {
-      phoneNumber = await askQuestion(
-        "أدخل رقم الهاتف مع رمز الدولة بدون + أو مسافات (مثال: 966501234567): "
-      );
+      if (process.stdin.isTTY) {
+        phoneNumber = await askQuestion(
+          "أدخل رقم الهاتف مع رمز الدولة بدون + أو مسافات (مثال: 966501234567): "
+        );
+      } else {
+        console.log("❌ ما فيه متغير PAIRING_NUMBER مضبوط، وما فيه إدخال تفاعلي متاح (يعني سيرفر سحابي).");
+        console.log("روح لإعدادات Railway → Variables → ضيف PAIRING_NUMBER برقمك (مثال: 966501234567) وأعد النشر.");
+        return;
+      }
     }
 
     phoneNumber = phoneNumber.replace(/[^0-9]/g, "");
