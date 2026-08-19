@@ -70,7 +70,7 @@ async function startBot() {
     auth: state,
     logger: pino({ level: "silent" }),
     printQRInTerminal: !USE_PAIRING_CODE,
-    browser: Browsers.ubuntu("Chrome"), // مهم عشان كود الاقتران يشتغل صح
+    browser: Browsers.macOS("Safari"), // هوية أكثر توافقًا مع كود الاقتران عند بعض الحسابات
   });
 
   // لو ما كاين تسجيل سابق ومفعّل وضع كود الاقتران، نطلب الكود
